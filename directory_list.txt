@@ -1,0 +1,12 @@
+total 32
+drwxr-xr-x@ 11 saachikaup  staff   352 Jul 20 22:17 .
+drwxr-xr-x  44 saachikaup  staff  1408 Jul 18 23:10 ..
+-rw-r--r--@  1 saachikaup  staff    97 Jul 18 23:10 .formatter.exs
+-rw-r--r--@  1 saachikaup  staff   542 Jul 18 23:10 .gitignore
+-rw-r--r--@  1 saachikaup  staff   449 Jul 18 23:10 README.md
+drwxr-xr-x@  4 saachikaup  staff   128 Jul 18 23:15 _build
+drwxr-xr-x   3 saachikaup  staff    96 Jul 20 00:49 config
+-rw-r--r--   1 saachikaup  staff     0 Jul 20 22:17 directory_list.txt
+drwxr-xr-x@  4 saachikaup  staff   128 Jul 20 00:50 lib
+-rw-r--r--@  1 saachikaup  staff   583 Jul 19 23:24 mix.exs
+drwxr-xr-x@  5 saachikaup  staff   160 Jul 20 00:41 test

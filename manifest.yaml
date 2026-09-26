@@ -1,0 +1,39 @@
+kind: playground
+name: client-server-lab
+title: Client / Server Lab
+playground:
+  machines:
+    - name: client-01
+      users:
+        - name: laborant
+          default: true
+      drives:
+        - source: ubuntu-24-04
+          mount: /
+      network:
+        interfaces:
+          - network: local
+      resources:
+        cpuCount: 1
+        ramSize: 1GiB
+    - name: server-01
+      users:
+        - name: laborant
+          default: true
+      drives:
+        - source: docker
+          mount: /
+      network:
+        interfaces:
+          - network: local
+      resources:
+        cpuCount: 2
+        ramSize: 2GiB
+  accessControl:
+    canList:
+      - owner
+    canRead:
+      - owner
+    canStart:
+      - owner
+
