@@ -1,0 +1,10 @@
+\frametitle{Turns out it can.}
+\vfill
+\centering
+\Large Spun up a server on AWS, configured some ports to ensure traffic flows -
+\vspace{.45cm}
+\begin{lstlisting}[style=small-shell]
+> Node.ping(:'lovecraft@ec2-54-261-398-873.compute-1.amazonaws.com').
+
+pong
+\end{lstlisting}

@@ -1,0 +1,190 @@
+\documentclass[aspectratio=169,13pt]{beamer}
+\usetheme{Madrid}
+\usecolortheme{default}
+\usefonttheme{professionalfonts}
+
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{beamgreen}{RGB}{157,211,181}
+\definecolor{beamcoral}{RGB}{222,91,77}
+\definecolor{beamink}{RGB}{34,39,43}
+\setbeamercolor{structure}{fg=beamgreen!55!beamink}
+\setbeamercolor{frametitle}{bg=beamgreen!45!white,fg=beamink}
+\setbeamercolor{palette primary}{bg=beamgreen,fg=beamink}
+\setbeamercolor{palette secondary}{bg=beamgreen!92!white,fg=beamink}
+\setbeamercolor{palette tertiary}{bg=beamgreen!82!white,fg=beamink}
+\setbeamercolor{palette quaternary}{bg=beamgreen!70!white,fg=beamink}
+\setbeamercolor{title}{fg=beamink}
+\setbeamercolor{subtitle}{fg=beamink}
+\setbeamerfont{frametitle}{size=\Large,series=\bfseries}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]
+
+\lstdefinestyle{shell}{
+  basicstyle=\ttfamily\Large,
+  backgroundcolor=\color{beamgreen!18!white},
+  frame=single,
+  rulecolor=\color{beamgreen!65!beamink},
+  breaklines=true,
+  columns=fullflexible,
+  showstringspaces=false,
+  xleftmargin=.7cm,
+  xrightmargin=.7cm,
+  aboveskip=.25cm,
+  belowskip=.25cm
+}
+\lstdefinestyle{small-shell}{
+  basicstyle=\ttfamily\normalsize,
+  backgroundcolor=\color{beamgreen!18!white},
+  frame=single,
+  rulecolor=\color{beamgreen!65!beamink},
+  breaklines=true,
+  columns=fullflexible,
+  showstringspaces=false,
+  xleftmargin=.4cm,
+  xrightmargin=.4cm
+}
+
+\title{Little bit of Elixir}
+\subtitle{So, what is Elixir?}
+\author{Saachi Kaup}
+\date{September 2026}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Zombie apocalypse}
+\vfill
+\begin{center}
+\includegraphics[height=.78\textheight]{assets/zombie-camps.png}
+\end{center}
+\text \LARGE Credits to Distribunomicon 
+\vfill
+\end{frame}
+
+\begin{frame}{Elixir / Erlang}
+\vfill
+\centering
+\begin{beamercolorbox}[center,rounded=true,sep=1.1em]{block body}
+\LARGE ``the language for communication''\\[.3cm]
+\large José Valim, creator of Elixir
+\end{beamercolorbox}
+\vspace{.7cm}
+\begin{minipage}{.72\textwidth}
+\large
+\begin{itemize}
+  \item It's built on top of the BEAM VM (Erlang)
+  \item It is a functional programming language.
+  \item Distributed by Default?
+\end{itemize}
+\end{minipage}
+\vfill
+\end{frame}
+
+\begin{frame}[fragile]{Run Nodes on the same machine}
+\vfill
+\begin{center}
+\begin{lstlisting}[style=shell]
+iex --sname cthulu
+iex --sname lovecraft
+\end{lstlisting}
+\vspace{.25cm}
+\begin{lstlisting}[style=shell]
+node1@host> Node.ping(:"cthulu@Saachis-MacBook-Air") 
+pong  # good result
+\end{lstlisting}
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{How to talk to another camp's member?}
+\vfill
+\begin{center}
+\begin{itemize}
+\item \LARGE Can do with two machines on this same network?
+\item \LARGE Will try it with docker for now.
+\item \LARGE Docker containers connected by the same network.
+\end{itemize}
+\end{center}
+\vfill
+\end{frame}
+
+\begin{frame}[fragile]{They talk to each other internally.}
+\vfill
+\begin{center}
+\begin{lstlisting}[style=shell]
+root@client:/app# getent hosts server
+172.18.0.3      server
+\end{lstlisting}
+\vspace{.45cm}
+\begin{lstlisting}[style=shell]
+root@server:/app# getent hosts client
+172.18.0.2      client
+\end{lstlisting}
+\end{center}
+\vfill
+\end{frame}
+
+\begin{frame}[fragile]{Logs might help?}
+\vfill
+\begin{lstlisting}[style=small-shell]
+tcpdump -n -i any -l 'port 4369 or portrange 9100-9101'
+\end{lstlisting}
+\vspace{.4cm}
+\begin{center}
+\Large
+\texttt{server-machine.port > client-machine.4369}\\[.45cm]
+\texttt{server-machine.port > client-machine.9100}
+\end{center}
+\vfill
+\end{frame}
+
+\begin{frame}{What is going on?}
+\vfill
+\begin{itemize}
+\item \LARGE The cthulu node first resolves the host.
+\item  \LARGE Then connects to EPMD (Erlang Port Mapper Daemon) of the remote machine.
+\item \LARGE This then allows it to connect to the port where Elixir node is running.
+\end{itemize}
+\vfill
+\end{frame}
+
+\begin{frame}{Still these two machines are effectively still kind of like talking to your own camp.}
+\vfill
+\begin{center}
+\includegraphics[height=.54\textheight]{assets/relay-eye.png}
+\end{center}
+\vfill
+\centering
+\LARGE I wanted to know if this would work over the internet?
+\vfill
+\end{frame}
+
+\begin{frame}[fragile]{Turns out it can.}
+\vfill
+\centering
+\Large Spun up a server on AWS, configured some ports to ensure traffic flows -
+\vspace{.45cm}
+\begin{lstlisting}[style=small-shell]
+> Node.ping(:'lovecraft@ec2-54-261-398-873.compute-1.amazonaws.com').
+
+pong
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Thank You!}
+\vfill
+\begin{itemize}
+\item \LARGE LinkedIn Profile - linkedin.com/saachi-kaup 
+\item \LARGE Fred Hebert's Distribunomicon - learnyousomeerlang.com
+\includegraphics[height=.54\textheight]{assets/blog-qr.png}
+\item \LARGE Blog Post - blog.skaup.co/little-bit-of-elixir
+\end{itemize}
+\vfill
+\end{frame}
+
+\end{document}
